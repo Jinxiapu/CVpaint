@@ -18,10 +18,24 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="paint.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="detection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="temp.txt">
       <Filter>资源文件</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="paint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="detection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
