@@ -13,4 +13,5 @@
 * if cant find penpoint from current frame, return false.
 */
 
-bool GetDetectResultByOTSU(Mat frame, DetectResult & dr);
+bool GetDetectResultByYCrCb(Mat & frame, DetectResult & dr);
+bool GetDetectResultByOTSU(Mat & frame, DetectResult & dr);

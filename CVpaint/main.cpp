@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 		help();
 		return 0;
 	}
-	//string input = "C:\\Users\\Jinxiapu\\Pictures\\Camera Roll\\test.mp4";
+	//string input = "C:\\Users\\Jinxiapu\\Pictures\\1.mp4";
 	string input = parser.get<std::string>("@input");
 	if (input.empty())
 		cap.open(0);
@@ -75,23 +75,24 @@ int main(int argc, char** argv)
 		cap >> tmp_frame;
 		if (tmp_frame.empty())
 			break;
-
+		flip(tmp_frame, tmp_frame, 0);
 		DetectResult dr;
 		Mat output;
 		tmp_frame.copyTo(output);
 
-		if (GetDetectResultByOTSU(tmp_frame, dr)) {
-			if (CVPaintState.controlOrpaint) {
-				ControlPanel(output, Paint, dr);
-			}
-			else {
-				PaintPanel(output, Paint, dr);
-				addWeighted(output, 1, Paint, 1, 0, output);
-			}
-		}
-		else {
+		bool detectresult = GetDetectResultByYCrCb(tmp_frame, dr);
+		if (!detectresult) {
 			putText(output, "Detection failed.", Point(10, tmp_frame.rows - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 255));
 		}
+		if (CVPaintState.controlOrpaint) {
+			ControlPanel(output, Paint, dr);
+		}
+		else {
+			PaintPanel(output, Paint, dr);
+			addWeighted(output, 1, Paint, 1, 0, output);
+		}
+
+		
 
 		imshow("output", output);
 #ifdef SAVE_VIDEO
