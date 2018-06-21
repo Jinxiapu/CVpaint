@@ -28,6 +28,17 @@ int main(int argc, char** argv)
 {
 	VideoCapture cap;
 
+#ifdef SAVE_VIDEO
+	VideoWriter vwriter;
+	if (vwriter.open("./vtest.avi", -1,
+		1000 / 30,
+		Size(cap.get(CV_CAP_PROP_FRAME_WIDTH), cap.get(CV_CAP_PROP_FRAME_HEIGHT)))) {
+		cout << "Video has been successfully initialized." << endl;
+	}
+#endif // SAVE_VIDEO
+
+	
+
 	CommandLineParser parser(argc, argv, "{help h||}{@input||}");
 	if (parser.has("help"))
 	{
@@ -83,10 +94,17 @@ int main(int argc, char** argv)
 		}
 
 		imshow("output", output);
+#ifdef SAVE_VIDEO
+		vwriter.write(output);
+#endif // SAVE_VIDEO
 		
 		char keycode = (char)waitKey(FrameInterval);
 		if (keycode == 27) // ESC
 			break;
 	}
+	cap.release();
+#ifdef SAVE_VIDEO
+	vwriter.release();
+#endif // SAVE_VIDEO
 	return 0;
 }

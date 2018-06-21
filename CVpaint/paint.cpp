@@ -57,11 +57,11 @@ int InPaintButtonArea(Point p, int color_circle_radius, int color_circle_space) 
 }
 void DrawControlPanel(Mat &output) {
 	putText(output, "PENCIL", Point(0, output.rows / 5 * 1.2), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 255));
-	for (size_t i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		circle(output, Point(output.cols / 6 * (3+i), output.rows / 5 * 1), output.rows / (10+5*i), Scalar(255, 255, 255), FILLED, 4);
 	}
 	putText(output, "RUBBER", Point(0, output.rows / 5 * 3.2), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 255));
-	for (size_t i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		circle(output, Point(output.cols / 6 * (3 + i), output.rows / 5 * 3), output.rows / (10 + 5 * i), Scalar(255, 255, 255), FILLED, 4);
 	}
 
@@ -71,12 +71,12 @@ void DrawControlPanel(Mat &output) {
 	putText(output, "CLEAR", Point(output.cols / 2, output.rows / 7 * 5.8), FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0, 0, 255));
 }
 int InControlButtonArea(Point p, int rows, int cols) {
-	for (size_t i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		if (PointInCicle(p, Point(cols / 6 * (3 + i), rows / 5 * 1), rows / (10 + 5 * i))) {
 			return 10 + i;
 		}
 	}
-	for (size_t i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		if (PointInCicle(p, Point(cols / 6 * (3 + i), rows / 5 * 3), rows / (10 + 5 * i))) {
 			return 20 + i;
 		}
@@ -92,7 +92,7 @@ int InControlButtonArea(Point p, int rows, int cols) {
 void PaintPanel(Mat &output, Mat & paint, DetectResult dr) {
 	int color_circle_radius = output.rows / 20;
 	int color_circle_space = output.rows / 12;
-	int basic_size = output.rows / 30;
+	int basic_size = output.rows / 60;
 
 	DrawPaintPanel(output, color_circle_radius, color_circle_space);
 
@@ -144,6 +144,10 @@ void PaintPanel(Mat &output, Mat & paint, DetectResult dr) {
 				Point(dr.penpoint.x + basic_size * CVPaintState.CurrentPaintSize, dr.penpoint.y),
 				Point(dr.penpoint.x, dr.penpoint.y + basic_size * CVPaintState.CurrentPaintSize),
 				Scalar(0, 0, 0), FILLED);
+			rectangle(output,
+				Point(dr.penpoint.x + basic_size * CVPaintState.CurrentPaintSize, dr.penpoint.y),
+				Point(dr.penpoint.x, dr.penpoint.y + basic_size * CVPaintState.CurrentPaintSize),
+				Scalar(0, 0, 255));
 			break;
 		default:
 			break;
@@ -160,7 +164,7 @@ void ControlPanel(Mat &output, Mat & paint, DetectResult dr) {
 #ifdef DEBUG
 		std::cout << "[Control Ctrl Confirm]ButtonID: " << button_id << endl;
 #endif // DEBUG
-		PaintSize S[3] = { SMALL, MIDDLE, LARGE };
+		PaintSize S[3] = {LARGE, MIDDLE,  SMALL};
 		if (button_id >= 10 && button_id < 20) {
 			CVPaintState.CurrentPaintState = PENCIL;
 			CVPaintState.CurrentPaintSize = S[button_id - 10];

@@ -8,6 +8,7 @@
 #include "opencv2/imgproc.hpp"
 
 #define DEBUG
+//#define SAVE_VIDEO
 
 using namespace std;
 using namespace cv;
