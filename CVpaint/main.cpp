@@ -14,8 +14,8 @@ _CVPaintState CVPaintState = {
 	true,
 	Scalar(255, 255, 255), 
 	PENCIL, 
-	SMALL, 
-	1000/FrameInterval*2
+	LARGE, 
+	20,
 };
 
 static void help()
@@ -69,21 +69,26 @@ int main(int argc, char** argv)
 
 	Mat Paint(tmp_frame.size(), CV_8UC3, Scalar::all(0));
 	namedWindow("output", 1);
+	cvCreateTrackbar("max_Cr", "output", &max_Cr, 255);
+	cvCreateTrackbar("max_Cb", "output", &max_Cb, 255);
+	cvCreateTrackbar("min_Cr", "output", &min_Cr, 255);
+	cvCreateTrackbar("min_Cb", "output", &min_Cb, 255);
 
 	while(true)
 	{
 		cap >> tmp_frame;
 		if (tmp_frame.empty())
 			break;
-		flip(tmp_frame, tmp_frame, 0);
+
 		DetectResult dr;
 		Mat output;
 		tmp_frame.copyTo(output);
 
-		bool detectresult = GetDetectResultByYCrCb(tmp_frame, dr);
+		bool detectresult = GetDetectResult(tmp_frame, dr);
 		if (!detectresult) {
-			putText(output, "Detection failed.", Point(10, tmp_frame.rows - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 255));
+			putText(output, "failed.", Point(10, tmp_frame.rows - 10), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 255));
 		}
+		
 		if (CVPaintState.controlOrpaint) {
 			ControlPanel(output, Paint, dr);
 		}

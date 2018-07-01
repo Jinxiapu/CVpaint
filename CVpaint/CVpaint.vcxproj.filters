@@ -37,5 +37,8 @@
     <ClInclude Include="detection.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CVPaint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

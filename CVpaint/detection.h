@@ -13,5 +13,7 @@
 * if cant find penpoint from current frame, return false.
 */
 
-bool GetDetectResultByYCrCb(Mat & frame, DetectResult & dr);
+//bool GetDetectResultByYCrCb(Mat & frame, DetectResult & dr);
+bool GetDetectResult(Mat & src, DetectResult & dr);
 bool GetDetectResultByOTSU(Mat & frame, DetectResult & dr);
+bool GetDetectResultBySkin(Mat & frame, DetectResult &dr);

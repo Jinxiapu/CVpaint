@@ -38,18 +38,18 @@ int InControlButtonArea(Point p, int rows, int cols);
 
 void DrawPaintPanel(Mat &output, int color_circle_radius, int color_circle_space) {
 	for (int i = 0; i < 5; i++) {
-		circle(output, Point(color_circle_space, color_circle_space * (2 * i + 1)), color_circle_radius, Palette[i], FILLED);
+		circle(output, Point(color_circle_space * (2 * i + 1), color_circle_space), color_circle_radius, Palette[i], FILLED);
 	}
-	line(output, Point(color_circle_space*2, 0), Point(color_circle_space*2, output.rows), Scalar(0, 0, 0), 1);
-	line(output, Point(0, color_circle_space*10), Point(color_circle_space * 2, color_circle_space*10), Scalar(0, 0, 0), 1);
-	putText(output, "ctrl", Point(color_circle_radius*2/5, color_circle_space * 11.2), FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 0));
+	line(output, Point(0, color_circle_space * 2), Point(output.cols, color_circle_space * 2), Scalar(0, 0, 0), 1);
+	line(output, Point(color_circle_space * 10, 0), Point(color_circle_space * 10, color_circle_space * 2), Scalar(0, 0, 0), 1);
+	putText(output, "ctrl", Point(color_circle_space * 10.5, color_circle_radius*1.8), FONT_HERSHEY_SIMPLEX,2, Scalar(255, 255, 0));
 }
 int InPaintButtonArea(Point p, int color_circle_radius, int color_circle_space) {
-	if (p.y > color_circle_space * 10 && p.x < color_circle_space * 2) {
+	if (p.x > color_circle_space * 10 && p.y < color_circle_space * 2) {
 		return 20;
 	}
 	for (int i = 0; i < 5; i++) {
-		if (PointInCicle(p, Point(color_circle_space, color_circle_space * (2 * i + 1)), color_circle_radius)) {
+		if (PointInCicle(p, Point(color_circle_space * (2 * i + 1), color_circle_space), color_circle_radius)) {
 			return 10 + i;
 		}
 	}
@@ -60,14 +60,14 @@ void DrawControlPanel(Mat &output) {
 	for (int i = 0; i < 3; i++) {
 		circle(output, Point(output.cols / 6 * (3+i), output.rows / 5 * 1), output.rows / (10+5*i), Scalar(255, 255, 255), FILLED, 4);
 	}
-	putText(output, "RUBBER", Point(0, output.rows / 5 * 3.2), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 255));
+	putText(output, "RUBBER", Point(0, output.rows / 5 * 2.7), FONT_HERSHEY_SIMPLEX, 2, Scalar(255, 255, 255));
 	for (int i = 0; i < 3; i++) {
-		circle(output, Point(output.cols / 6 * (3 + i), output.rows / 5 * 3), output.rows / (10 + 5 * i), Scalar(255, 255, 255), FILLED, 4);
+		circle(output, Point(output.cols / 6 * (3 + i), output.rows / 2), output.rows / (10 + 5 * i), Scalar(255, 255, 255), FILLED, 4);
 	}
 
-	rectangle(output, Point(output.cols / 12 * 1, output.rows / 4 * 3), Point(output.cols /8  * 3, output.rows / 7 * 6), Scalar(255, 255, 255), FILLED);
+	rectangle(output, Point(output.cols / 12 * 1, output.rows/4*2.5), Point(output.cols /8  * 3, output.rows / 7 * 6), Scalar(255, 255, 255), FILLED);
 	putText(output, "SAVE", Point(output.cols / 12 * 1, output.rows / 7 * 5.8), FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0, 0, 255));
-	rectangle(output, Point(output.cols / 6 * 3, output.rows / 4 * 3), Point(output.cols / 8 * 7, output.rows / 7 * 6), Scalar(255, 255, 255), FILLED);
+	rectangle(output, Point(output.cols / 6 * 3, output.rows / 4 * 2.5), Point(output.cols / 8 * 7, output.rows / 7 * 6), Scalar(255, 255, 255), FILLED);
 	putText(output, "CLEAR", Point(output.cols / 2, output.rows / 7 * 5.8), FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0, 0, 255));
 }
 int InControlButtonArea(Point p, int rows, int cols) {
@@ -77,21 +77,21 @@ int InControlButtonArea(Point p, int rows, int cols) {
 		}
 	}
 	for (int i = 0; i < 3; i++) {
-		if (PointInCicle(p, Point(cols / 6 * (3 + i), rows / 5 * 3), rows / (10 + 5 * i))) {
+		if (PointInCicle(p, Point(cols / 6 * (3 + i), rows / 2), rows / (10 + 5 * i))) {
 			return 20 + i;
 		}
 	}
-	if (PointInRec(p, Point(cols / 12, rows / 4 * 3), Point(cols / 8 * 3, rows / 7 * 6))) {
+	if (PointInRec(p, Point(cols / 12, rows / 4 * 2.5), Point(cols / 8 * 3, rows / 7 * 6))) {
 		return 30; //SAVE
 	}
-	if (PointInRec(p, Point(cols / 2, rows / 4 * 3), Point(cols / 8 * 7, rows / 7 * 6))) {
+	if (PointInRec(p, Point(cols / 2, rows / 4 * 2.5), Point(cols / 8 * 7, rows / 7 * 6))) {
 		return 40; // CLEAR
 	}
 	return -1;
 }
 void PaintPanel(Mat &output, Mat & paint, DetectResult dr) {
 	int color_circle_radius = output.rows / 20;
-	int color_circle_space = output.rows / 12;
+	int color_circle_space = output.cols / 12;
 	int basic_size = output.rows / 60;
 
 	DrawPaintPanel(output, color_circle_radius, color_circle_space);
@@ -100,7 +100,7 @@ void PaintPanel(Mat &output, Mat & paint, DetectResult dr) {
 	static size_t counter = CVPaintState.ConfirmTime;
 	static int button_id = -1;
 
-	if (dr.penpoint.x < color_circle_space * 2) {
+	if (dr.penpoint.y < color_circle_space * 2) {
 		if (!counter) {
 #ifdef DEBUG
 			std::cout << "[Paint Ctrl Confirm]ButtonID: " << button_id << endl;

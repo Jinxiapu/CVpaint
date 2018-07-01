@@ -49,3 +49,6 @@ struct _CVPaintState {
 	const size_t ConfirmTime;
 };
 extern _CVPaintState CVPaintState;
+
+extern int min_Cr, min_Cb;
+extern int max_Cr, max_Cb;
